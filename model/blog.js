@@ -43,4 +43,4 @@ bloglistSchema.set("toJSON", {
   },
 });
 
-module.exports = mongoose.model("blog", bloglistSchema);
+module.exports = mongoose.model("Blog", bloglistSchema);
