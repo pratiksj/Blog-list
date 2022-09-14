@@ -1,0 +1,16 @@
+GET http://localhost:3003/blogs
+
+###
+
+POST http://localhost:3003/blogs/
+Content-type: application/json
+
+{
+    "title":"About javascript",
+    "author":"Kim Jong",
+    "url":"wie",
+    "likes":2
+}
+
+###
+DELETE http://localhost:3003/blogs/
