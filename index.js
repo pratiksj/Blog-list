@@ -1,24 +1,9 @@
-const express = require("express");
-const cors = require("cors");
-const Blog = require("./model/blog");
-const { response } = require("express");
-const morgan = require("morgan");
+const app = require("./app");
+const http = require("http");
+const config = require("./utills/config");
+const logger = require("./utills/logger");
 
-const App = express();
-App.use(cors());
-App.use(express.json());
-App.use(
-  // using custom format function
-  morgan(function (tokens, req, res) {
-    return [
-      tokens.method(req, res),
-      tokens.url(req, res),
-      tokens.status(req, res),
-      tokens.res(req, res, "content-length"),
-      "-",
-      tokens["response-time"](req, res),
-      "ms",
-      JSON.stringify(req.body),
-    ].join(" ");
-  })
-);
+const server = http.createServer(app);
+server.listen(config.PORT, () => {
+  logger.info(`Server running on port${config.PORT}`);
+});

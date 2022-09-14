@@ -15,9 +15,9 @@ blogsRouter.post("/api/blogs", (request, response) => {
   });
 });
 
-const PORT = 3003;
-blogsRouter.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// const PORT = 3003;
+// blogsRouter.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
 
 module.exports = blogsRouter;
