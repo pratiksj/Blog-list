@@ -8,7 +8,7 @@ const App = express();
 App.use(cors());
 App.use(express.json());
 App.use(middleware.requestLogger);
-App.use("/blogs", blogsRouter);
+App.use("/api/blogs", blogsRouter);
 App.use(middleware.unknownEndpoint);
 App.use(middleware.errorHandler);
 
