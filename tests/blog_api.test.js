@@ -49,9 +49,9 @@ test("a specific blog is within the returned blog", async () => {
   expect(blogTitle).toContain("Practice");
 });
 
-test.only("Authentication of Id", async () => {
+test("Authentication of Id", async () => {
   const response = await api.get("/api/blogs");
-  console.log(response, "hellow i ma here");
+  //console.log(response, "hellow i ma here");
   expect(response.body[0].id).toBeDefined();
 });
 
@@ -92,6 +92,14 @@ test("Adding the new blog without likes key ", async () => {
   const response = await api.get("/api/blogs");
   const misLikes = response.body.map((r) => r.likes);
   expect(misLikes).toContain(0);
+});
+
+test.only("Title and url are missing", async () => {
+  const blog = {
+    title: "Binod Shrestha",
+    likes: 12,
+  };
+  await api.post("/api/blogs").send(blog).expect(400);
 });
 
 afterAll(() => {

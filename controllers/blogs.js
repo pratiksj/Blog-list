@@ -26,6 +26,9 @@ blogsRouter.post("/", async (request, response, next) => {
   if (!body.likes) {
     body.likes = 0;
   }
+  if (!(body.title || body.url)) {
+    response.status(400).end();
+  }
   const blog = new Blog({
     title: body.title,
     author: body.author,

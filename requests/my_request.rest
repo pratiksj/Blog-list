@@ -6,10 +6,10 @@ POST http://localhost:3003/api/blogs
 Content-type: application/json
 
 {
-    "title":"About javascript",
-    "author":"Kim Jong",
-    "url":"wie",
-    "likes":2
+"title": "my name is suraj",
+"author":"Kim Jong",
+"url":"wie.com",
+"likes":5
 }
 
 ###
