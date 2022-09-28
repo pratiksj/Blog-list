@@ -72,7 +72,7 @@ const favouriteBlog = (blogs) => {
         likes: currentValue.likes,
       };
     }
-    console.log(previousValue);
+    //console.log(previousValue);
     return previousValue;
   }, {});
   return mostliked;

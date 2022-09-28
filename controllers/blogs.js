@@ -23,6 +23,9 @@ blogsRouter.get("/:id", (request, response, next) => {
 blogsRouter.post("/", async (request, response, next) => {
   const body = request.body;
 
+  if (!body.likes) {
+    body.likes = 0;
+  }
   const blog = new Blog({
     title: body.title,
     author: body.author,
@@ -35,13 +38,6 @@ blogsRouter.post("/", async (request, response, next) => {
   } catch (error) {
     next(error);
   }
-
-  // blog
-  //   .save()
-  //   .then((savedNote) => {
-  //     response.json(savedNote);
-  //   })
-  //   .catch((error) => next(error));
 });
 
 blogsRouter.delete("/:id", (request, response, next) => {
