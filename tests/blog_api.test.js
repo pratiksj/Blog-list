@@ -94,12 +94,24 @@ test("Adding the new blog without likes key ", async () => {
   expect(misLikes).toContain(0);
 });
 
-test.only("Title and url are missing", async () => {
+test("Title and url are missing", async () => {
   const blog = {
     title: "Binod Shrestha",
     likes: 12,
   };
   await api.post("/api/blogs").send(blog).expect(400);
+});
+describe("deletion of a blog", () => {
+  test("delete the single block post", async () => {
+    const blogToDelete = await Blog.find({ title: "Practice" });
+    await api.delete(`/api/blogs/${blogToDelete[0]._id}`).expect(204);
+    const blogRemain = await Blog.find({});
+    const blogTitle = blogRemain.map((r) => {
+      return r.title;
+    });
+
+    expect(blogTitle).not.toContain("Practice");
+  });
 });
 
 afterAll(() => {

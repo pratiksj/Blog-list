@@ -43,12 +43,20 @@ blogsRouter.post("/", async (request, response, next) => {
   }
 });
 
-blogsRouter.delete("/:id", (request, response, next) => {
-  Blog.findByIdAndDelete(request.params.id)
-    .then((result) => {
-      response.status(204).end();
-    })
-    .catch((error) => next(error));
+blogsRouter.delete("/:id", async (request, response, next) => {
+  try {
+    console.log(request.params.id, "helow");
+    const blog = request.params.id;
+    await Blog.findByIdAndDelete(blog);
+    response.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+  // Blog.findByIdAndDelete(request.params.id)
+  //   .then((result) => {
+  //     response.status(204).end();
+  //   })
+  //   .catch((error) => next(error));
 });
 
 blogsRouter.put("./:id", (request, response, next) => {
