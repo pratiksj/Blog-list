@@ -52,30 +52,24 @@ blogsRouter.delete("/:id", async (request, response, next) => {
   } catch (error) {
     next(error);
   }
-  // Blog.findByIdAndDelete(request.params.id)
-  //   .then((result) => {
-  //     response.status(204).end();
-  //   })
-  //   .catch((error) => next(error));
 });
 
-blogsRouter.put("./:id", (request, response, next) => {
-  const body = request.body;
-  const blog = {
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes,
-  };
-  Blog.findByIdAndUpdate(request.params.id, blog, {
-    new: true,
-    runValidators: true,
-    context: "query",
-  })
-    .then((updatedBlog) => {
-      response.json(updatedBlog);
-    })
-    .catch((error) => next(error));
+blogsRouter.put("/:id", async (request, response, next) => {
+  try {
+    const body = request.body;
+    const newBlog = {
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      likes: body.likes,
+    };
+    const blog = await Blog.findByIdAndUpdate(request.params.id, newBlog, {
+      new: true,
+    });
+    response.status(200).json(blog);
+  } catch {
+    (error) => next(error);
+  }
 });
 
 // const PORT = 3003;

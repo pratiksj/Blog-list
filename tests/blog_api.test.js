@@ -114,6 +114,16 @@ describe("deletion of a blog", () => {
   });
 });
 
+test("updating the blog", async () => {
+  const blog = await Blog.find({ title: "Practice" });
+  const title = {
+    likes: 10,
+  };
+  await api.put(`/api/blogs/${blog[0].id}`).send(title).expect(200);
+  const renewBlog = await Blog.find({ title: "Practice" });
+  expect(renewBlog[0].likes).toBe(10);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
