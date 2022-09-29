@@ -1,24 +1,27 @@
 const blogsRouter = require("express").Router();
 const Blog = require("../model/blog");
 
-blogsRouter.get("/", async (request, response) => {
-  const myBlogs = await Blog.find({});
-  response.json(myBlogs);
+blogsRouter.get("/", async (request, response, next) => {
+  try {
+    const myBlogs = await Blog.find({});
+    response.status(200).json(myBlogs);
+  } catch (error) {
+    next(error);
+  }
 });
 
-blogsRouter.get("/:id", (request, response, next) => {
-  Blog.findById(request.params.id)
-    .then((blogs) => {
-      if (blogs) {
-        response.json(blogs);
-      } else {
-        response.status(404).end();
-      }
-    })
-    .catch((error) => next(error));
+blogsRouter.get("/:id", async (request, response, next) => {
+  try {
+    const blog = await Blog.findById(request.params.id);
+    if (blog) {
+      response.json(blog);
+    } else {
+      response.status(404).end();
+    }
+  } catch (error) {
+    next(error);
+  }
 });
-
-//blogsRouter.post("/api/blogs", (request, response) => {
 
 blogsRouter.post("/", async (request, response, next) => {
   const body = request.body;
@@ -45,9 +48,7 @@ blogsRouter.post("/", async (request, response, next) => {
 
 blogsRouter.delete("/:id", async (request, response, next) => {
   try {
-    console.log(request.params.id, "helow");
-    const blog = request.params.id;
-    await Blog.findByIdAndDelete(blog);
+    await Blog.findByIdAndRemove(request.params.id);
     response.status(204).end();
   } catch (error) {
     next(error);
@@ -71,10 +72,5 @@ blogsRouter.put("/:id", async (request, response, next) => {
     (error) => next(error);
   }
 });
-
-// const PORT = 3003;
-// blogsRouter.listen(PORT, () => {
-//   console.log(`Server running on port ${PORT}`);
-// });
 
 module.exports = blogsRouter;

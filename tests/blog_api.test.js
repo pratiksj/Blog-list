@@ -2,126 +2,155 @@ const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
 const Blog = require("../model/blog");
-
+const helper = require("./test_helper");
 const api = supertest(app);
-
-const initialBlogs = [
-  {
-    title: "Practice",
-    author: "Niru Kumari",
-    url: "this and this",
-    likes: 6,
-  },
-  {
-    title: "Arna Buffalo",
-    author: "Niru Magar",
-    url: "this and that",
-    likes: 18,
-  },
-];
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-  let noteObject = new Blog(initialBlogs[0]);
-  await noteObject.save();
-  noteObject = new Blog(initialBlogs[1]);
-  await noteObject.save();
+  const blogObjects = helper.initialBlogs.map((note) => new Blog(note));
+  const promiseArray = blogObjects.map((note) => note.save());
+  await Promise.all(promiseArray);
 });
 
-test(" blogs are returned as json", async () => {
-  await api
-    .get("/api/blogs")
-    .expect(200)
+describe("Initial testing", () => {
+  test(" blogs are returned as json", async () => {
+    await api
+      .get("/api/blogs")
+      .expect(200)
 
-    .expect("Content-Type", /application\/json/);
-});
+      .expect("Content-Type", /application\/json/);
+  });
 
-test("all blogs are returned", async () => {
-  const response = await api.get("/api/blogs");
+  test("all blogs are returned", async () => {
+    const response = await helper.blogInDb();
 
-  expect(response.body).toHaveLength(initialBlogs.length);
-});
+    expect(response).toHaveLength(helper.initialBlogs.length);
+  });
 
-test("a specific blog is within the returned blog", async () => {
-  const response = await api.get("/api/blogs");
+  test("a specific blog is within the returned blog", async () => {
+    const response = await helper.blogInDb();
 
-  const blogTitle = response.body.map((r) => r.title);
-  expect(blogTitle).toContain("Practice");
-});
-
-test("Authentication of Id", async () => {
-  const response = await api.get("/api/blogs");
-  //console.log(response, "hellow i ma here");
-  expect(response.body[0].id).toBeDefined();
-});
-
-//describe
-test("a valid blog can be added", async () => {
-  const newBlog = {
-    title: "World War",
-    author: "Suresh",
-    url: "www.dot",
-    likes: 20,
-  };
-
-  await api
-    .post("/api/blogs")
-    .send(newBlog)
-    .expect(201)
-    .expect("Content-Type", /application\/json/);
-
-  const response = await api.get("/api/blogs");
-
-  const blogTitle = response.body.map((r) => r.title);
-
-  expect(response.body).toHaveLength(initialBlogs.length + 1);
-  expect(blogTitle).toContain("World War");
-});
-
-test("Adding the new blog without likes key ", async () => {
-  const noLikesBlog = {
-    title: "Ucoming election",
-    author: "Amit shah",
-    url: "www.kathmandu",
-  };
-  await api
-    .post("/api/blogs")
-    .send(noLikesBlog)
-    .expect(201)
-    .expect("Content-Type", /application\/json/);
-  const response = await api.get("/api/blogs");
-  const misLikes = response.body.map((r) => r.likes);
-  expect(misLikes).toContain(0);
-});
-
-test("Title and url are missing", async () => {
-  const blog = {
-    title: "Binod Shrestha",
-    likes: 12,
-  };
-  await api.post("/api/blogs").send(blog).expect(400);
-});
-describe("deletion of a blog", () => {
-  test("delete the single block post", async () => {
-    const blogToDelete = await Blog.find({ title: "Practice" });
-    await api.delete(`/api/blogs/${blogToDelete[0]._id}`).expect(204);
-    const blogRemain = await Blog.find({});
-    const blogTitle = blogRemain.map((r) => {
-      return r.title;
-    });
-
-    expect(blogTitle).not.toContain("Practice");
+    const blogTitle = response.map((r) => r.title);
+    expect(blogTitle).toContain("Practice");
   });
 });
 
-test("updating the blog", async () => {
-  const blog = await Blog.find({ title: "Practice" });
-  const title = {
-    likes: 10,
-  };
-  await api.put(`/api/blogs/${blog[0].id}`).send(title).expect(200);
-  const renewBlog = await Blog.find({ title: "Practice" });
-  expect(renewBlog[0].likes).toBe(10);
+describe("verify unique identifier property of the blog post ", () => {
+  test("Authentication of Id", async () => {
+    const response = await helper.blogInDb();
+    console.log(response, "hellow i am here");
+    expect(response[0].id).toBeDefined();
+  });
+});
+
+describe("Creating new Blog with or without likes property and decline the blog without title or url ", () => {
+  test("a valid blog can be added", async () => {
+    const newBlog = {
+      title: "World War",
+      author: "Suresh",
+      url: "www.dot",
+      likes: 20,
+    };
+
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+
+    const blogAtEnd = await helper.blogInDb();
+    expect(blogAtEnd).toHaveLength(helper.initialBlogs.length + 1);
+    const titles = blogAtEnd.map((n) => n.title);
+    expect(titles).toContain("World War");
+  });
+
+  test("Adding the new blog without likes key ", async () => {
+    const noLikesBlog = {
+      title: "Ucoming election",
+      author: "Amit shah",
+      url: "www.kathmandu",
+    };
+    await api
+      .post("/api/blogs")
+      .send(noLikesBlog)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+    //const response = await api.get("/api/blogs");
+    const blogAtEnd = await helper.blogInDb();
+
+    //const misLikes = response.body.map((r) => r.likes);
+    const misLikes = blogAtEnd.map((r) => r.likes);
+    expect(misLikes).toContain(0);
+  });
+
+  test("Blog without title or url is not added ", async () => {
+    const blog = {
+      title: "Binod Shrestha",
+      likes: 12,
+    };
+    await api.post("/api/blogs").send(blog).expect(400);
+    const blogAtEnd = await helper.blogInDb();
+
+    expect(blogAtEnd).toHaveLength(helper.initialBlogs.length);
+  });
+});
+
+describe(" fetching and deletion of a blog", () => {
+  test("a specific blog can be viewed", async () => {
+    const blogAtStart = await helper.blogInDb();
+
+    const blogToView = blogAtStart[0];
+
+    const resultBlog = await api
+      .get(`/api/blogs/${blogToView.id}`)
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
+
+    const processedblogToView = JSON.parse(JSON.stringify(blogToView));
+
+    expect(resultBlog.body).toEqual(processedblogToView);
+  });
+
+  test("a blog can be deleted", async () => {
+    const blogAtStart = await helper.blogInDb();
+    const blogToDelete = blogAtStart[0];
+
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+    const blogAtEnd = await helper.blogInDb();
+
+    expect(blogAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+
+    const titles = blogAtEnd.map((r) => r.title);
+
+    expect(titles).not.toContain(blogToDelete.title);
+  });
+  // test("delete the single block post", async () => {
+  //   const blogToDelete = await Blog.find({ title: "Practice" });
+  //   await api.delete(`/api/blogs/${blogToDelete[0]._id}`).expect(204);
+  //   const blogRemain = await Blog.find({});
+  //   const blogTitle = blogRemain.map((r) => {
+  //     return r.title;
+  //   });
+
+  //   expect(blogTitle).not.toContain("Practice");
+  // });
+});
+describe("Upgrading the blog", () => {
+  test("updating the blog", async () => {
+    const blogAtStart = await helper.blogInDb();
+    console.log(blogAtStart, "heyyy");
+    //const blogToUpdate = blogAtStart.map((r) => r.title); //await Blog.find({ title: "Practice" });
+    const title = {
+      likes: 10,
+    };
+    await api.put(`/api/blogs/${blogAtStart[0].id}`).send(title).expect(200);
+    const renewBlog = await helper.blogInDb();
+    //const updatedBlog = renewBlog.map((r) => r.title); //await Blog.find({ title: "Practice" });
+
+    //const renewBlog = await Blog.find({ title: "Practice" });
+    expect(renewBlog[0].likes).toBe(10);
+  });
 });
 
 afterAll(() => {
