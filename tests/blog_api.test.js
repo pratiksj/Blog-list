@@ -106,9 +106,9 @@ describe(" fetching and deletion of a blog", () => {
       .expect(200)
       .expect("Content-Type", /application\/json/);
 
-    const processedblogToView = JSON.parse(JSON.stringify(blogToView));
+    //const processedblogToView = JSON.parse(JSON.stringify(blogToView));
 
-    expect(resultBlog.body).toEqual(processedblogToView);
+    expect(resultBlog.body).toEqual(blogToView);
   });
 
   test("a blog can be deleted", async () => {
@@ -125,30 +125,16 @@ describe(" fetching and deletion of a blog", () => {
 
     expect(titles).not.toContain(blogToDelete.title);
   });
-  // test("delete the single block post", async () => {
-  //   const blogToDelete = await Blog.find({ title: "Practice" });
-  //   await api.delete(`/api/blogs/${blogToDelete[0]._id}`).expect(204);
-  //   const blogRemain = await Blog.find({});
-  //   const blogTitle = blogRemain.map((r) => {
-  //     return r.title;
-  //   });
-
-  //   expect(blogTitle).not.toContain("Practice");
-  // });
 });
 describe("Upgrading the blog", () => {
   test("updating the blog", async () => {
     const blogAtStart = await helper.blogInDb();
-    console.log(blogAtStart, "heyyy");
-    //const blogToUpdate = blogAtStart.map((r) => r.title); //await Blog.find({ title: "Practice" });
+
     const title = {
       likes: 10,
     };
     await api.put(`/api/blogs/${blogAtStart[0].id}`).send(title).expect(200);
     const renewBlog = await helper.blogInDb();
-    //const updatedBlog = renewBlog.map((r) => r.title); //await Blog.find({ title: "Practice" });
-
-    //const renewBlog = await Blog.find({ title: "Practice" });
     expect(renewBlog[0].likes).toBe(10);
   });
 });
