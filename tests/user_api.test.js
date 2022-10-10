@@ -58,4 +58,18 @@ describe("when there is initially one user in db", () => {
     const usersAtEnd = await helper.usersInDb();
     expect(usersAtEnd).toEqual(usersAtStart);
   });
+  test("If the passwork is not contain of 3 characters and username is not unique", async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: "#pr",
+      name: "pratiskha",
+      password: "pa",
+    };
+    const result = await api.post("/api/users").send(newUser);
+
+    expect(result.status).toBe(400);
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toEqual(usersAtStart);
+  });
 });

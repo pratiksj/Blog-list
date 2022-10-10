@@ -21,8 +21,8 @@ POST http://localhost:3003/api/users
 Content-type: application/json
 
 {
-"username": "binda Rai",
+"username": "bi",
 "name":"binda",
-"password":"hamus"
+"password":"ha"
 
 }
