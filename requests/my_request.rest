@@ -6,12 +6,23 @@ POST http://localhost:3003/api/blogs
 Content-type: application/json
 
 {
-"title": "my name is suraj",
-"author":"Kim Jong",
-"url":"wie.com",
-"likes":5
+"title": "sunny",
+"author":"kim dam min",
+"url":"kathmandu.post",
+"likes":3,
+"userId":"6343c3317db8faddba15d804"
 }
 
 ###
 DELETE http://localhost:3003/api/blogs
 
+###
+POST http://localhost:3003/api/users
+Content-type: application/json
+
+{
+"username": "binda Rai",
+"name":"binda",
+"password":"hamus"
+
+}
