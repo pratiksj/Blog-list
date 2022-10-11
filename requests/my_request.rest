@@ -26,3 +26,13 @@ Content-type: application/json
 "password":"grass"
 
 }
+
+###
+POST http://localhost:3003/api/login
+Content-type: application/json
+
+{
+"username": "jason",
+"password":"grass"
+
+}

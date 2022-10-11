@@ -5,12 +5,14 @@ const middleware = require("./utills/middleware");
 //const { response } = require("express");
 const blogsRouter = require("./controllers/blogs");
 const usersRouter = require("./controllers/users");
+const loginRouter = require("./controllers/login");
 const App = express();
 App.use(cors());
 App.use(express.json());
 App.use(middleware.requestLogger);
 App.use("/api/blogs", blogsRouter);
 App.use("/api/users", usersRouter);
+App.use("/api/login", loginRouter);
 App.use(middleware.unknownEndpoint);
 App.use(middleware.errorHandler);
 
