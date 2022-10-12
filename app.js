@@ -10,6 +10,7 @@ const App = express();
 App.use(cors());
 App.use(express.json());
 App.use(middleware.requestLogger);
+App.use(middleware.tokenExtractor);
 App.use("/api/blogs", blogsRouter);
 App.use("/api/users", usersRouter);
 App.use("/api/login", loginRouter);
