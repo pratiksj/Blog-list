@@ -55,6 +55,10 @@ describe("Creating new Blog with or without likes property and decline the blog 
     await api
       .post("/api/blogs")
       .send(newBlog)
+      .set(
+        "Authorization",
+        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2MzQ3Y2FjNzliNmI4YWVhMzVjY2ZhZDciLCJpYXQiOjE2NjU2NDkzNzd9.AVvvS6JDdL3hhopH7Il9_YH5aK3x_zspklTPygeVsQc"
+      )
       .expect(201)
       .expect("Content-Type", /application\/json/);
 
@@ -73,6 +77,10 @@ describe("Creating new Blog with or without likes property and decline the blog 
     await api
       .post("/api/blogs")
       .send(noLikesBlog)
+      .set(
+        "Authorization",
+        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2MzQ3YzZkNGQwZDU4NzMxNmNjN2Y5NjQiLCJpYXQiOjE2NjU2NDg0MDF9.mlPPnOZ5uDj9aCNgbmV_ZGL39Dn8EmtRAneIlsKRBiQ"
+      )
       .expect(201)
       .expect("Content-Type", /application\/json/);
     //const response = await api.get("/api/blogs");
@@ -88,7 +96,14 @@ describe("Creating new Blog with or without likes property and decline the blog 
       title: "Binod Shrestha",
       likes: 12,
     };
-    await api.post("/api/blogs").send(blog).expect(400);
+    await api
+      .post("/api/blogs")
+      .send(blog)
+      .set(
+        "Authorization",
+        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2MzQ3YzZkNGQwZDU4NzMxNmNjN2Y5NjQiLCJpYXQiOjE2NjU2NDg0MDF9.mlPPnOZ5uDj9aCNgbmV_ZGL39Dn8EmtRAneIlsKRBiQ"
+      )
+      .expect(400);
     const blogAtEnd = await helper.blogInDb();
 
     expect(blogAtEnd).toHaveLength(helper.initialBlogs.length);
@@ -111,11 +126,17 @@ describe(" fetching and deletion of a blog", () => {
     expect(resultBlog.body).toEqual(blogToView);
   });
 
-  test("a blog can be deleted", async () => {
+  test.only("a blog can be deleted", async () => {
     const blogAtStart = await helper.blogInDb();
     const blogToDelete = blogAtStart[0];
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set(
+        "Authorization",
+        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2MzQ3Y2MwMDU0NTFmNWFlMmM3NjcyZDQiLCJpYXQiOjE2NjU2NTAwMzd9.39MpdUdJD9jyYcEqPfP1k2mmseLOrn3PGez5itqYr_Y"
+      )
+      .expect(204);
 
     const blogAtEnd = await helper.blogInDb();
 

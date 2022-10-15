@@ -1,4 +1,4 @@
-GET http://localhost:3003/api/blogs
+GET http://localhost:3003/api/users
 
 ###
 
@@ -7,14 +7,15 @@ Content-type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imphc29uIiwiaWQiOiI2MzQ1Mzk4MDVhMzdjMjlmNmRhNGNkZmYiLCJpYXQiOjE2NjU1ODg2NDh9.SzJZD31iln1L-PdEUECdnB8l1qCLLLgdsC5wPQjESBs
 
 {
-"title": "Extremely cold in the kathmandu with wrong token",
-"author":"Laxmi hamal",
-"url":"onlinekhabar.com",
-"likes":3
+"title": "Extremely hot in the hilly with valid token",
+"author":"Hemraaj bahadur",
+"url":"kantipur.com",
+"likes":5
 }
 
 ###
-DELETE http://localhost:3003/api/blogs
+DELETE http://localhost:3003/api/blogs/6347af0d49dc536a08226855
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imphc29uIiwiaWQiOiI2MzQ1Mzk4MDVhMzdjMjlmNmRhNGNkZmYiLCJpYXQiOjE2NjU1ODg2NDh9.SzJZD31iln1L-PdEUECdnB8l1qCLLLgdsC5wPQjESBs
 
 ###
 POST http://localhost:3003/api/users
@@ -32,7 +33,7 @@ POST http://localhost:3003/api/login
 Content-type: application/json
 
 {
-"username": "jason",
-"password":"grass"
+"username": "mluukkai",
+"password":"salainen"
 
 }

@@ -25,14 +25,6 @@ blogsRouter.get("/:id", async (request, response, next) => {
   }
 });
 
-// const getTokenFrom = (request) => {
-//   const authorization = request.get("authorization");
-//   if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
-//     return authorization.substring(7);
-//   }
-//   return null;
-// };
-
 blogsRouter.post("/", async (request, response, next) => {
   try {
     const body = request.body;
@@ -42,7 +34,6 @@ blogsRouter.post("/", async (request, response, next) => {
     if (!body.likes) {
       body.likes = 0;
     }
-    //const blog = await Blog.find({title:body.title})
 
     if (!(body.title || body.url)) {
       response.status(400).json({ error: "tittle and url are required" });
@@ -75,8 +66,16 @@ blogsRouter.post("/", async (request, response, next) => {
 
 blogsRouter.delete("/:id", async (request, response, next) => {
   try {
-    await Blog.findByIdAndRemove(request.params.id);
-    response.status(204).end();
+    const user = request.user;
+    const blogId = request.params.id;
+    const blog = await Blog.findById(blogId);
+    if (!blog) {
+      response.status(404).json({ error: "This id doesn't exist" });
+    }
+    if (blog.user.toString() === user.id.toString()) {
+      await Blog.findByIdAndRemove(blogId);
+      response.status(204).json({ message: "deleted successfully" }).end();
+    }
   } catch (error) {
     next(error);
   }
