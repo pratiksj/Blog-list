@@ -90,10 +90,14 @@ blogsRouter.put("/:id", async (request, response, next) => {
       url: body.url,
       likes: body.likes,
     };
-    const blog = await Blog.findByIdAndUpdate(request.params.id, newBlog, {
+    const blog = await Blog.findById(request.params.id);
+    if (!blog) {
+      response.status(404).json({ error: "this id doesn't exist" });
+    }
+    const data = await Blog.findByIdAndUpdate(request.params.id, newBlog, {
       new: true,
     });
-    response.status(200).json(blog);
+    response.status(200).json(data);
   } catch {
     (error) => next(error);
   }

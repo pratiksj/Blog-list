@@ -126,7 +126,7 @@ describe(" fetching and deletion of a blog", () => {
     expect(resultBlog.body).toEqual(blogToView);
   });
 
-  test.only("a blog can be deleted", async () => {
+  test("a blog can be deleted", async () => {
     const blogAtStart = await helper.blogInDb();
     const blogToDelete = blogAtStart[0];
 
@@ -148,15 +148,22 @@ describe(" fetching and deletion of a blog", () => {
   });
 });
 describe("Upgrading the blog", () => {
-  test("updating the blog", async () => {
+  test.only("updating the blog", async () => {
     const blogAtStart = await helper.blogInDb();
 
     const title = {
       likes: 10,
     };
-    await api.put(`/api/blogs/${blogAtStart[0].id}`).send(title).expect(200);
+    await api
+      .put(`/api/blogs/${blogAtStart[1].id}`)
+      .set(
+        "Authorization",
+        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2MzQ3Y2MwMDU0NTFmNWFlMmM3NjcyZDQiLCJpYXQiOjE2NjU5ODA3NTl9.cZMwfyhVkZa-rhxHvoKTrLvn6gUV8r5HOwcuHVxGcPA"
+      )
+      .send(title)
+      .expect(200);
     const renewBlog = await helper.blogInDb();
-    expect(renewBlog[0].likes).toBe(10);
+    expect(renewBlog[1].likes).toBe(10);
   });
 });
 
