@@ -152,7 +152,7 @@ describe(" fetching and deletion of a blog and updating the blog", () => {
       likes: 10,
     };
     await api
-      .put(`/api/blogs/${blogAtStart[1].id}`)
+      .put(`/api/blogs/${blogAtStart[0].id}`)
       .set(
         "Authorization",
         "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2MzQ3Y2MwMDU0NTFmNWFlMmM3NjcyZDQiLCJpYXQiOjE2NjU5ODE1MDl9.7OOlJMI4866rF5uiw1QTt4pviJWjTpzvxMTGJWZVMY0"
@@ -160,7 +160,7 @@ describe(" fetching and deletion of a blog and updating the blog", () => {
       .send(title)
       .expect(200);
     const renewBlog = await helper.blogInDb();
-    expect(renewBlog[1].likes).toBe(10);
+    expect(renewBlog[0].likes).toBe(10);
   });
 });
 
