@@ -33,9 +33,7 @@ describe("Initial testing", () => {
     const blogTitle = response.map((r) => r.title);
     expect(blogTitle).toContain("Practice");
   });
-});
 
-describe("verify unique identifier property of the blog post ", () => {
   test("Authentication of Id", async () => {
     const response = await helper.blogInDb();
     console.log(response, "hellow i am here");
@@ -110,7 +108,7 @@ describe("Creating new Blog with or without likes property and decline the blog 
   });
 });
 
-describe(" fetching and deletion of a blog", () => {
+describe(" fetching and deletion of a blog and updating the blog", () => {
   test("a specific blog can be viewed", async () => {
     const blogAtStart = await helper.blogInDb();
 
@@ -146,8 +144,7 @@ describe(" fetching and deletion of a blog", () => {
 
     expect(titles).not.toContain(blogToDelete.title);
   });
-});
-describe("Upgrading the blog", () => {
+
   test.only("updating the blog", async () => {
     const blogAtStart = await helper.blogInDb();
 
@@ -158,7 +155,7 @@ describe("Upgrading the blog", () => {
       .put(`/api/blogs/${blogAtStart[1].id}`)
       .set(
         "Authorization",
-        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2MzQ3Y2MwMDU0NTFmNWFlMmM3NjcyZDQiLCJpYXQiOjE2NjU5ODA3NTl9.cZMwfyhVkZa-rhxHvoKTrLvn6gUV8r5HOwcuHVxGcPA"
+        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2MzQ3Y2MwMDU0NTFmNWFlMmM3NjcyZDQiLCJpYXQiOjE2NjU5ODE1MDl9.7OOlJMI4866rF5uiw1QTt4pviJWjTpzvxMTGJWZVMY0"
       )
       .send(title)
       .expect(200);
