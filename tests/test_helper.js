@@ -7,14 +7,14 @@ const initialBlogs = [
     author: "Niru Kumari",
     url: "this and this",
     likes: 6,
-    user: "6347cc005451f5ae2c7672d4",
+    user: "634fc73ce43c1f72f17150b4",
   },
   {
     title: "Arna Buffalo",
     author: "Niru Magar",
     url: "this and that",
     likes: 18,
-    user: "6347cc005451f5ae2c7672d4",
+    user: "634fc73ce43c1f72f17150b4",
   },
 ];
 

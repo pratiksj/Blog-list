@@ -36,8 +36,6 @@ describe("when there is initially one user in db", () => {
     const usernames = usersAtEnd.map((u) => u.username);
     expect(usernames).toContain(newUser.username);
   });
-});
-describe("when there is initially one user in db", () => {
   test("creation fails with proper statuscode and message if username already taken", async () => {
     const usersAtStart = await helper.usersInDb();
 
@@ -58,7 +56,7 @@ describe("when there is initially one user in db", () => {
     const usersAtEnd = await helper.usersInDb();
     expect(usersAtEnd).toEqual(usersAtStart);
   });
-  test("If the passwork is not contain of 3 characters and username is not unique", async () => {
+  test("If the password is not contain of 3 characters and username is not unique", async () => {
     const usersAtStart = await helper.usersInDb();
 
     const newUser = {
