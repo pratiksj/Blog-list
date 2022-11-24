@@ -75,6 +75,10 @@ blogsRouter.delete("/:id", async (request, response, next) => {
     if (blog.user.toString() === user.id.toString()) {
       await Blog.findByIdAndRemove(blogId);
       response.status(204).json({ message: "deleted successfully" }).end();
+    } else {
+      response
+        .status(401)
+        .json({ message: "you don't have permission to delete this blog" });
     }
   } catch (error) {
     next(error);
@@ -84,11 +88,13 @@ blogsRouter.delete("/:id", async (request, response, next) => {
 blogsRouter.put("/:id", async (request, response, next) => {
   try {
     const body = request.body;
+    //const user = await User.findById(decodedToken.id);
     const newBlog = {
       title: body.title,
       author: body.author,
       url: body.url,
       likes: body.likes,
+      //user:user._id
     };
     const blog = await Blog.findById(request.params.id);
     if (!blog) {

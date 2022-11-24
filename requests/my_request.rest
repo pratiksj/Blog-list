@@ -22,9 +22,9 @@ POST http://localhost:3003/api/users
 Content-type: application/json
 
 {
-"username": "Maxii",
-"name":"Max",
-"password":"gs"
+"username": "usha",
+"name":"usha",
+"password":"abc"
 
 }
 
@@ -33,7 +33,7 @@ POST http://localhost:3003/api/login
 Content-type: application/json
 
 {
-"username": "mluukkai",
-"password":"salainen"
+"username": "usha",
+"password":"abc"
 
 }
