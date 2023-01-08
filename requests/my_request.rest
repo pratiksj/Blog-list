@@ -45,7 +45,7 @@ POST http://localhost:3003/api/blogs/63b7f59ee0733e2eec68ed01/comments
 Content-type: application/json
 
 {
-"comment": "not good"
+"comment": "very good article"
 
 }
 
