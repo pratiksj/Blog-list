@@ -1,7 +1,9 @@
 GET http://localhost:3003/api/users
 
 ###
+GET http://localhost:3003/api/blogs
 
+###
 POST http://localhost:3003/api/blogs
 Content-type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imphc29uIiwiaWQiOiI2MzQ1Mzk4MDVhMzdjMjlmNmRhNGNkZmYiLCJpYXQiOjE2NjU1ODg2NDh9.SzJZD31iln1L-PdEUECdnB8l1qCLLLgdsC5wPQjESBs
@@ -37,3 +39,15 @@ Content-type: application/json
 "password":"abc"
 
 }
+
+###
+POST http://localhost:3003/api/blogs/63b7f59ee0733e2eec68ed01/comments
+Content-type: application/json
+
+{
+"comment": "not good"
+
+}
+
+###
+GET http://localhost:3003/api/blogs/63b7f59ee0733e2eec68ed01/comments
