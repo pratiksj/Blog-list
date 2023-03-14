@@ -35,7 +35,7 @@ blogsRouter.post("/", async (request, response, next) => {
       body.likes = 0;
     }
 
-    if (!(body.title || body.url)) {
+    if (!(body.title && body.url)) {
       response.status(400).json({ error: "tittle and url are required" });
     } else {
       const token = request.token;
@@ -57,7 +57,15 @@ blogsRouter.post("/", async (request, response, next) => {
       const newBlog = await blog.save();
       user.blogs = user.blogs.concat(newBlog._id);
       await user.save();
-      response.status(201).json(newBlog);
+      let newResponse = {
+        id: newBlog.id,
+        title: newBlog.title,
+        author: newBlog.author,
+        url: newBlog.url,
+        likes: newBlog.likes,
+        user: { username: user.username, name: user.name, id: user.id },
+      };
+      response.status(201).json(newResponse);
     }
   } catch (error) {
     next(error);
